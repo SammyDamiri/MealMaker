@@ -28,26 +28,26 @@ export default function Index() {
 
   useEffect(() => { load(); }, [load]);
 
-  if (loading) return <View style={s.center}><ActivityIndicator size="large" /></View>;
+  if (loading) return <View style={styles.center}><ActivityIndicator size="large" /></View>;
   if (error) return (
-    <View style={s.center}>
-      <Text style={s.err}>{error}</Text>
-      <Pressable onPress={load} style={s.btn}><Text style={s.btnText}>Try again</Text></Pressable>
+    <View style={styles.center}>
+      <Text style={styles.err}>{error}</Text>
+      <Pressable onPress={load} style={styles.btn}><Text style={styles.btnText}>Try again</Text></Pressable>
     </View>
   );
 
   return (
-    <ScrollView contentContainerStyle={[s.center,{paddingVertical:24}]}
+    <ScrollView contentContainerStyle={[styles.center,{paddingVertical:24}]}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
       {meal && <MealCard meal={meal} />}
-      <Pressable onPress={refresh} style={[s.btn,{marginTop:16}]}>
-        <Text style={s.btnText}>Give me another</Text>
+      <Pressable onPress={refresh} style={[styles.btn,{marginTop:16}]}>
+        <Text style={styles.btnText}>Give me another</Text>
       </Pressable>
     </ScrollView>
   );
 }
 
-const s = StyleSheet.create({
+const styles = StyleSheet.create({
   center:{flexGrow:1,justifyContent:"center",alignItems:"center",backgroundColor:"#25292e",gap:12},
   err:{color:"#fecaca",fontSize:16},
   btn:{backgroundColor:"#22d3ee",paddingHorizontal:14,paddingVertical:10,borderRadius:8},
