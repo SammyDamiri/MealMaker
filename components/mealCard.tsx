@@ -5,9 +5,9 @@ export default function MealCard({ meal }: { meal: Meal }) {
   const ingredients = meal.ingredients.filter(i => i.name).slice(0, 20);
 
   return (
-    <View style={s.card}>
+    <View style={styles.card}>
       {/* Row 1: Title */}
-      <Text style={s.title} accessibilityRole="header">
+      <Text style={styles.title} accessibilityRole="header">
         {meal.name}
       </Text>
 
@@ -15,18 +15,18 @@ export default function MealCard({ meal }: { meal: Meal }) {
       {meal.thumbnail ? (
         <Image
           source={{ uri: meal.thumbnail }}
-          style={s.thumb}
+          style={styles.thumb}
           resizeMode="cover"
           accessibilityLabel={`${meal.name} photo`}
         />
       ) : null}
 
       {/* Row 3: Ingredients */}
-      <View style={s.section}>
-        <Text style={s.sectionTitle}>Ingredients</Text>
-        <View style={s.ingList}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Ingredients</Text>
+        <View style={styles.ingList}>
           {ingredients.map((ing, idx) => (
-            <Text key={idx} style={s.ingItem}>
+            <Text key={idx} style={styles.ingItem}>
               • {ing.name}{ing.measure ? ` (${ing.measure})` : ""}
             </Text>
           ))}
@@ -35,16 +35,16 @@ export default function MealCard({ meal }: { meal: Meal }) {
 
       {/* Row 4: Instructions */}
       {meal.instructions ? (
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Instructions</Text>
-          <Text style={s.instructions}>{meal.instructions.trim()}</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Instructions</Text>
+          <Text style={styles.instructions}>{meal.instructions.trim()}</Text>
         </View>
       ) : null}
     </View>
   );
 }
 
-const s = StyleSheet.create({
+const styles = StyleSheet.create({
   card: {
     width: "90%",
     maxWidth: 720,
