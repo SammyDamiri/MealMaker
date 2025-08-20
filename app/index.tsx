@@ -37,10 +37,10 @@ export default function Index() {
   );
 
   return (
-    <ScrollView contentContainerStyle={[styles.center,{paddingVertical:24}]}
+    <ScrollView contentContainerStyle={[styles.center, { paddingVertical: 24 }]}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
       {meal && <MealCard meal={meal} />}
-      <Pressable onPress={refresh} style={[styles.btn,{marginTop:16}]}>
+      <Pressable onPress={refresh} style={[styles.btn, { marginTop: 16 }]}>
         <Text style={styles.btnText}>Give me another</Text>
       </Pressable>
     </ScrollView>
@@ -48,8 +48,8 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  center:{flexGrow:1,justifyContent:"center",alignItems:"center",backgroundColor:"#25292e",gap:12},
-  err:{color:"#fecaca",fontSize:16},
-  btn:{backgroundColor:"#22d3ee",paddingHorizontal:14,paddingVertical:10,borderRadius:8},
-  btnText:{color:"#0f172a",fontWeight:"700"},
+  center: { flexGrow: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#25292e", gap: 12 },
+  err: { color: "#fecaca", fontSize: 16 },
+  btn: { backgroundColor: "#22d3ee", paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8 },
+  btnText: { color: "#0f172a", fontWeight: "700" },
 });
