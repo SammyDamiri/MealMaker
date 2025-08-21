@@ -2,7 +2,7 @@ import type { Meal } from "@/models/meal";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function MealCard({ meal }: { meal: Meal }) {
-  const ingredients = meal.ingredients.filter(i => i.name).slice(0, 20);
+  const ingredients = meal.ingredients.filter((i) => i.name).slice(0, 20);
 
   return (
     <View style={styles.card}>
@@ -27,7 +27,8 @@ export default function MealCard({ meal }: { meal: Meal }) {
         <View style={styles.ingList}>
           {ingredients.map((ing, idx) => (
             <Text key={idx} style={styles.ingItem}>
-              • {ing.name}{ing.measure ? ` (${ing.measure})` : ""}
+              • {ing.name}
+              {ing.measure ? ` (${ing.measure})` : ""}
             </Text>
           ))}
         </View>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#111827",
     padding: 14,
     gap: 12,
-    alignSelf: "center"
+    alignSelf: "center",
   },
 
   // Row 1
