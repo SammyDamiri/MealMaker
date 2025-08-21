@@ -30,3 +30,18 @@ export async function getRandomMeal(): Promise<Meal> {
   if (!dto) throw new Error("No meal returned");
   return mapToMeal(dto);
 }
+
+export async function searchMeals(
+  query: string,
+  signal?: AbortSignal
+): Promise<Meal[]> {
+  const q = query.trim();
+  if (!q) return [];
+  const res = await fetch(`${BASE}/search.php?s=${encodeURIComponent(q)}`, {
+    signal,
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  const list: any[] = json?.meals ?? [];
+  return list.map(mapToMeal);
+}
