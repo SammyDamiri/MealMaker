@@ -1,9 +1,12 @@
 import MealCard from "@/components/mealCard";
 import type { Meal } from "@/models/meal";
 import { getRandomMeal } from "@/repositories/mealRepo";
-import { useCallback, useEffect, useState } from "react";
+import * as Haptics from "expo-haptics";
+import { Accelerometer } from "expo-sensors";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -39,9 +42,47 @@ export default function Index() {
     }
   }, []);
 
+  const lastFiredRef = useRef(0); // keep across events
+
+  // Initial load
   useEffect(() => {
     load();
   }, [load]);
+
+  // 🔔 Shake-to-refresh
+  useEffect(() => {
+    // No accel on web, and don’t bind twice
+    if (Platform.OS === "web") return;
+
+    // Sample every ~120ms (lower = more sensitive)
+    Accelerometer.setUpdateInterval(120);
+
+    let last = { x: 0, y: 0, z: 0 };
+    const cooldownMs = 1200; // don’t fire repeatedly
+    const threshold = 1.4; // tweak sensitivity (1.2–1.8 is typical)
+
+    const sub = Accelerometer.addListener(({ x, y, z }) => {
+      // Amount of motion since last sample
+      const delta =
+        Math.abs(x - last.x) + Math.abs(y - last.y) + Math.abs(z - last.z);
+
+      if (delta > threshold) {
+        const now = Date.now();
+        // avoid double-fire while we're already refreshing
+        if (!refreshing && now - lastFiredRef.current > cooldownMs) {
+          lastFiredRef.current = now;
+          // nice little bump; ignore errors if not supported
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(
+            () => {}
+          );
+          refresh();
+        }
+      }
+      last = { x, y, z };
+    });
+
+    return () => sub.remove();
+  }, [refresh, refreshing]);
 
   if (loading)
     return (
@@ -49,6 +90,7 @@ export default function Index() {
         <ActivityIndicator size="large" />
       </View>
     );
+
   if (error)
     return (
       <View style={styles.center}>
@@ -66,9 +108,14 @@ export default function Index() {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      <Pressable onPress={refresh} style={[styles.btn]}>
+      <Pressable onPress={refresh} style={styles.btn}>
         <Text style={styles.btnText}>New Meal</Text>
       </Pressable>
+      {Platform.OS !== "web" && (
+        <Text style={{ color: "#94a3b8" }}>
+          Tip: shake device for a new meal
+        </Text>
+      )}
       {meal && <MealCard meal={meal} />}
     </ScrollView>
   );
