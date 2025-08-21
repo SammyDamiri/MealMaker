@@ -66,10 +66,10 @@ export default function Index() {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      {meal && <MealCard meal={meal} />}
-      <Pressable onPress={refresh} style={[styles.btn, { marginTop: 16 }]}>
-        <Text style={styles.btnText}>Give me another</Text>
+      <Pressable onPress={refresh} style={[styles.btn]}>
+        <Text style={styles.btnText}>New Meal</Text>
       </Pressable>
+      {meal && <MealCard meal={meal} />}
     </ScrollView>
   );
 }
