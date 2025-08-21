@@ -77,7 +77,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   center: {
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#25292e",
     gap: 12,

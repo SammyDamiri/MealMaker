@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   screenTitle: {
+    textAlign: "center",
     color: "white",
     fontSize: 22,
     fontWeight: "800",
@@ -110,6 +111,9 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     flexDirection: "row",
+    width: "90%",
+    maxWidth: 720,
+    alignSelf: "center",
     alignItems: "center",
     backgroundColor: "#0f172a",
     borderRadius: 10,

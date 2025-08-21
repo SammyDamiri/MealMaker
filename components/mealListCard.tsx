@@ -52,6 +52,9 @@ export default function MealListCard({ meal, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
+    width: "90%",
+    maxWidth: 720,
+    alignSelf: "center",
     alignItems: "center",
     gap: 12,
     backgroundColor: "#111827",
