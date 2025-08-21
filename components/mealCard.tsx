@@ -1,15 +1,40 @@
+// components/mealCard.tsx
+import { useFavorites } from "@/contexts/favoritesContext";
 import type { Meal } from "@/models/meal";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function MealCard({ meal }: { meal: Meal }) {
+type Props = {
+  meal: Meal;
+  /** Set false if you ever want to hide the heart on a specific screen */
+  showFavorite?: boolean;
+};
+
+export default function MealCard({ meal, showFavorite = true }: Props) {
+  const { isFavorite, toggle } = useFavorites();
+  const fav = isFavorite(meal.id);
+
   const ingredients = meal.ingredients.filter((i) => i.name).slice(0, 20);
 
   return (
-    <View style={styles.card}>
-      {/* Row 1: Title */}
-      <Text style={styles.title} accessibilityRole="header">
-        {meal.name}
-      </Text>
+    <View style={styles.card} accessible accessibilityLabel={`${meal.name} recipe card`}>
+      {/* Row 1: Title + Heart */}
+      <View style={styles.headerRow}>
+        <Text style={styles.title} accessibilityRole="header" numberOfLines={2}>
+          {meal.name}
+        </Text>
+        {showFavorite && (
+          <Pressable
+            onPress={() => toggle(meal)}
+            accessibilityRole="button"
+            accessibilityLabel={fav ? "Remove from favorites" : "Add to favorites"}
+            style={styles.heartBtn}
+            hitSlop={6}
+          >
+            <Ionicons name={fav ? "heart" : "heart-outline"} size={22} color="#22d3ee" />
+          </Pressable>
+        )}
+      </View>
 
       {/* Row 2: Image */}
       {meal.thumbnail ? (
@@ -25,12 +50,15 @@ export default function MealCard({ meal }: { meal: Meal }) {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Ingredients</Text>
         <View style={styles.ingList}>
-          {ingredients.map((ing, idx) => (
-            <Text key={idx} style={styles.ingItem}>
-              • {ing.name}
-              {ing.measure ? ` (${ing.measure})` : ""}
-            </Text>
-          ))}
+          {ingredients.map((ing) => {
+            const key = `${ing.name}-${ing.measure ?? ""}`;
+            return (
+              <Text key={key} style={styles.ingItem}>
+                • {ing.name}
+                {ing.measure ? ` (${ing.measure})` : ""}
+              </Text>
+            );
+          })}
         </View>
       </View>
 
@@ -57,14 +85,21 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 
-  // Row 1
+  // Title row
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   title: {
     color: "white",
     fontSize: 22,
     fontWeight: "800",
+    flex: 1,
   },
+  heartBtn: { padding: 4 },
 
-  // Row 2
+  // Image
   thumb: {
     width: "100%",
     height: undefined,
@@ -73,10 +108,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
-  // Rows 3 & 4
-  section: {
-    gap: 6,
-  },
+  // Sections
+  section: { gap: 6 },
   sectionTitle: {
     color: "#cbd5e1",
     fontWeight: "700",
@@ -86,19 +119,9 @@ const styles = StyleSheet.create({
   },
 
   // Ingredients list
-  ingList: {
-    gap: 4,
-  },
-  ingItem: {
-    color: "#e5e7eb",
-    fontSize: 14,
-    lineHeight: 20,
-  },
+  ingList: { gap: 4 },
+  ingItem: { color: "#e5e7eb", fontSize: 14, lineHeight: 20 },
 
   // Instructions
-  instructions: {
-    color: "#e5e7eb",
-    fontSize: 14,
-    lineHeight: 20,
-  },
+  instructions: { color: "#e5e7eb", fontSize: 14, lineHeight: 20 },
 });
