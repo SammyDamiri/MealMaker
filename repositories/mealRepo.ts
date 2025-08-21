@@ -27,7 +27,7 @@ export async function getRandomMeal(): Promise<Meal> {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const json = await res.json();
   const dto = json?.meals?.[0];
-  if (!dto) throw new Error("No meal returned");
+  if (!dto) throw new Error("No meal returned from API");
   return mapToMeal(dto);
 }
 
@@ -44,4 +44,16 @@ export async function searchMeals(
   const json = await res.json();
   const list: any[] = json?.meals ?? [];
   return list.map(mapToMeal);
+}
+
+export async function getMealById(
+  id: string,
+  signal?: AbortSignal
+): Promise<Meal> {
+  const res = await fetch(`${BASE}/lookup.php?i=${id}`, { signal });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  const dto = json?.meals?.[0];
+  if (!dto) throw new Error("No meal returned from API");
+  return mapToMeal(dto);
 }

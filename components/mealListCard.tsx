@@ -1,4 +1,5 @@
 import type { Meal } from "@/models/meal";
+import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 type Props = {
@@ -7,13 +8,25 @@ type Props = {
 };
 
 export default function MealListCard({ meal, onPress }: Props) {
+  const router = useRouter();
+
+  const handlePress = () => {
+    if (onPress) {
+      onPress(meal);
+      return;
+    }
+    router.push({ pathname: "/meal/[id]" as const, params: { id: meal.id } });
+  };
+
   return (
     <Pressable
-      onPress={() => onPress?.(meal)}
+      onPress={handlePress}
       style={styles.card}
       android_ripple={{ color: "#0ea5b5" }}
-      accessibilityRole={onPress ? "button" : undefined}
-      accessibilityLabel={`${meal.name} ${meal.category ?? ""} ${meal.area ?? ""}`}
+      accessibilityRole="button"
+      accessibilityLabel={`${meal.name} ${meal.category ?? ""} ${
+        meal.area ?? ""
+      }`}
     >
       <Image
         source={meal.thumbnail ? { uri: meal.thumbnail } : undefined}

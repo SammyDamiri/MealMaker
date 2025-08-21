@@ -70,7 +70,7 @@ export default function SearchScreen() {
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder="Type at least 2 letters…"
+          placeholder="Search for Meal..."
           placeholderTextColor="#94a3b8"
           style={styles.input}
           returnKeyType="search"
