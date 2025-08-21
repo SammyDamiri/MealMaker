@@ -12,7 +12,8 @@ export default function Index() {
 
   const load = useCallback(async () => {
     try {
-      setError(null); setLoading(true);
+      setError(null); 
+      setLoading(true);
       setMeal(await getRandomMeal());
     } catch (e: any) {
       setError(e?.message ?? "Failed to fetch meal");
