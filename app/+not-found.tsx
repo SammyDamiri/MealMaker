@@ -1,14 +1,21 @@
-import { Link, Stack } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { Stack, useRouter } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function NotFoundScreen() {
+  const router = useRouter();
+
   return (
     <>
-      <Stack.Screen options={{ title: "Oops! Page not found." }} />
+      <Stack.Screen options={{ title: "Page not found." }} />
       <View style={styles.container}>
-        <Link href="/" style={styles.link}>
-          Go back to home screen!
-        </Link>
+        <Text style={styles.text}>The page was not found!!</Text>
+        <Text style={styles.text}>Press button to return to Home page.</Text>
+        <Pressable
+          onPress={() => router.replace("/")}
+          style={[styles.btn, { marginTop: 16 }]}
+        >
+          <Text style={styles.btnText}>Go to home</Text>
+        </Pressable>
       </View>
     </>
   );
@@ -21,8 +28,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#25292e",
   },
-  link: {
+  text: {
     color: "white",
-    textDecorationLine: "underline",
+    fontSize: 16,
+    marginBottom: 12,
   },
+  btn: {
+    backgroundColor: "#22d3ee",
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  btnText: { color: "#0f172a", fontWeight: "700" },
 });
